@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
-#define RX        0
+#define RX        4
 #define TX        1
-#define PUSH_BTN  2
-#define PIN_A     3
-#define PIN_B     4
+#define PUSH_BTN  3
+#define PIN_A     0
+#define PIN_B     2
 
 SoftwareSerial Serial(RX, TX);
 // A turn counter for the rotary encoder (negative = anti-clockwise)
