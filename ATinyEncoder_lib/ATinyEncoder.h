@@ -9,27 +9,24 @@ class ATinyEnocder {
     private:
     HardwareSerial* SerialPort;
     boolean called = false;
+    int available=0;
 
     public:
-    int avail=0;
     Info RecPacket;
-    boolean newInfo = false;
     ATinyEnocder (HardwareSerial* targetPort){
         SerialPort = targetPort;
         SerialPort->begin(9600);
     }
     boolean handle(){
         char ok = 90;
-        newInfo = false;
         if ( called == false ){
             SerialPort->write(ok);
             called = true;
         }
-        avail = SerialPort->available();
-        if (avail >= 2) {
+        available = SerialPort->available();
+        if (available >= 2) {
             SerialPort->readBytes((uint8_t*)(&RecPacket),2);
             if ( Serial1.available() == 0 ) { called = false; }
-            newInfo = true;
             return true;
         }
     return false;
