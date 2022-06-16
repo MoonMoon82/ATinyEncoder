@@ -73,7 +73,8 @@ bool FreeToSend = false;
 
 void loop() {
   int8_t rotationValue = checkRotaryEncoder();
-  if ( !digitalRead(PUSH_BTN) ) { SendPacket.EncoderInfo.pushed = true; }
+  boolean pushbutton = !digitalRead(PUSH_BTN);
+  //if ( pushbutton ) { SendPacket.EncoderInfo.pushed = true; }
   SendPacket.EncoderInfo.rotationCounter += rotationValue;
   
   if ( Serial.available() ){
@@ -83,10 +84,11 @@ void loop() {
     }
   }
   if ( FreeToSend ) {
-    if ((SendPacket.EncoderInfo.rotationCounter != 0) || (SendPacket.EncoderInfo.pushed)){
+    if ((SendPacket.EncoderInfo.rotationCounter != 0) || (SendPacket.EncoderInfo.pushed != pushbutton)){
+      SendPacket.EncoderInfo.pushed = pushbutton;
       Serial.write(SendPacket.buffer,2);
       SendPacket.EncoderInfo.rotationCounter = 0;
-      SendPacket.EncoderInfo.pushed = false;
+
       FreeToSend = false;
     }
   }
