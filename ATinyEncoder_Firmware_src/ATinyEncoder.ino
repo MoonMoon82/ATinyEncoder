@@ -63,26 +63,31 @@ int8_t checkRotaryEncoder() {
     return 0;
 }
 
-void setup()
-{
+void setup() {
     Serial.begin(9600);
     pinMode(PIN_A, INPUT_PULLUP);
     pinMode(PIN_B, INPUT_PULLUP);
     pinMode(PUSH_BTN, INPUT_PULLUP);
 }
+bool FreeToSend = false;
 
-void loop()
-{
+void loop() {
   int8_t rotationValue = checkRotaryEncoder();
   if ( !digitalRead(PUSH_BTN) ) { SendPacket.EncoderInfo.pushed = true; }
   SendPacket.EncoderInfo.rotationCounter += rotationValue;
   
-  if ((SendPacket.EncoderInfo.rotationCounter != 0) || (SendPacket.EncoderInfo.pushed)){
-    if ( Serial.available() ){
+  if ( Serial.available() ){
+    char c = Serial.read();
+    if ( c == 90 ) {
+      FreeToSend = true;
+    }
+  }
+  if ( FreeToSend ) {
+    if ((SendPacket.EncoderInfo.rotationCounter != 0) || (SendPacket.EncoderInfo.pushed)){
       Serial.write(SendPacket.buffer,2);
-      char c = Serial.read();
       SendPacket.EncoderInfo.rotationCounter = 0;
       SendPacket.EncoderInfo.pushed = false;
+      FreeToSend = false;
     }
   }
 }
