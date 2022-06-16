@@ -3,6 +3,7 @@
 A dedicated ATTiny85 as Rotary Encoder Interface based on:
 
 https://github.com/RalphBacon/226-Better-Rotary-Encoder---no-switch-bounce
+
 https://www.pinteric.com/rotary.html
 
 His code has got high hitrate for accurate reading of rotary encoders. But it also has got a big flaw if you're trying to get a rotary encoder working in your own project: Whatever what's in your code causing a delay of calling the checkRotaryEncoder() leads to a false estimation of the encoder state.
