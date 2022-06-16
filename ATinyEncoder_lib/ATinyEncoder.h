@@ -5,43 +5,41 @@ struct Info{
   bool pushed;
 };
 
-union Packet1{
-  char buffer[sizeof(Info)];
-  Info EncoderInfo;
-} RecPacket;
+class ATinyEnocder {
+    private:
+    HardwareSerial* SerialPort;
+    boolean called = false;
 
-
-
-void setup()
-{
-    Serial.begin(115200);
-    Serial1.begin(9600);
-    delay(3500);
-    Serial.println("Setup completed");
-}
-char ok = 80;
-bool called = false;
-void loop() {
-    //Serial.print(".");
-    if ( called == false ){
-        Serial1.write(ok);
-        called = true;
+    public:
+    int avail=0;
+    Info RecPacket;
+    boolean newInfo = false;
+    ATinyEnocder (HardwareSerial* targetPort){
+        SerialPort = targetPort;
+        SerialPort->begin(9600);
     }
-    int avail = Serial1.available();
-    if (avail >= 2) {
-        Serial.print("avail=");
-        Serial.print(avail);
-        Serial.print("  ");
-        Serial1.readBytes(RecPacket.buffer,2);
-        //if ( ci != 0) {
-            Serial.print("Pushed=");
-            Serial.print(RecPacket.EncoderInfo.pushed);
-            Serial.print("    Counter=");
-            Serial.println(RecPacket.EncoderInfo.rotationCounter);
-        //}
-        if ( Serial1.available() == 0 ) { called = false; }
+    boolean handle(){
+        char ok = 80;
+        newInfo = false;
+        if ( called == false ){
+            //SerialPort.write(ok);
+            SerialPort->write(ok);
+            called = true;
+        }
+        avail = SerialPort->available();
+        if (avail >= 2) {
+            SerialPort->readBytes((uint8_t*)(&RecPacket),2);
+            if ( Serial1.available() == 0 ) { called = false; }
+            newInfo = true;
+            return true;
+        }
+    return false;
     }
-    
-    delay(50);
+    void reset(){
+        RecPacket.pushed = false;
+        RecPacket.rotationCounter = 0;
+    }
+};
 
-}
+
+
