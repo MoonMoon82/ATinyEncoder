@@ -1,27 +1,27 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
-#define RX        4
-#define TX        1
-#define PUSH_BTN  3
-#define PIN_A     0
-#define PIN_B     2
+//Pin setup:
+#define RX        4 //Serial Receive Pin
+#define TX        1 //Serial Transmission Pin
+
+#define PUSH_BTN  3 //Encoder Pushbutton
+#define PIN_A     0 //Encoder Rotary switch 1
+#define PIN_B     2 //Encoder Rotary switch 2
 
 SoftwareSerial Serial(RX, TX);
-// A turn counter for the rotary encoder (negative = anti-clockwise)
 
-struct Info{
-  int8_t rotationCounter;
+boolean FreeToSend = false; //Host tells it is ok to send current encoder data
+
+//Data structure to send
+struct Info {
+  int8_t rotation;
   bool pushed;
-};
+} InfoPacket;
 
-union Packet1{
-  char buffer[sizeof(Info)];
-  Info EncoderInfo;
-} SendPacket;
-
-
-//int8_t rotationCounter = 0;
+//checkRotaryEncoder() by Ralph Bacon / Marko Pinteric
+//https://github.com/RalphBacon/226-Better-Rotary-Encoder---no-switch-bounce
+//https://www.pinteric.com/rotary.html
 
 int8_t checkRotaryEncoder() {
     // Reset the flag that brought us here (from ISR)
@@ -65,31 +65,39 @@ int8_t checkRotaryEncoder() {
 
 void setup() {
     Serial.begin(9600);
+
+    //GPIO Pin Setup
+    //INPUT_PULLUP allows it to connect the ATTiny directly to the encoder pins
     pinMode(PIN_A, INPUT_PULLUP);
     pinMode(PIN_B, INPUT_PULLUP);
     pinMode(PUSH_BTN, INPUT_PULLUP);
 }
-bool FreeToSend = false;
 
 void loop() {
-  int8_t rotationValue = checkRotaryEncoder();
+
+  //Lets analyse the current rotary switch states
+  int8_t rotationDelta = checkRotaryEncoder();
+  //Add the delta value to the saved rotation value
+  InfoPacket.rotation += rotationDelta;
+
+  //Get the push button state - reminder: due to the INPUT_PULLUP the state needs to be inverted
   boolean pushbutton = !digitalRead(PUSH_BTN);
-  //if ( pushbutton ) { SendPacket.EncoderInfo.pushed = true; }
-  SendPacket.EncoderInfo.rotationCounter += rotationValue;
   
   if ( Serial.available() ){
-    char c = Serial.read();
-    if ( c == 90 ) {
+    //Check if the host sends this specific byte to tell it's ok to send the current encoder data
+    if ( Serial.read() == 90 ) { //idk ? What byte should I wait for?
       FreeToSend = true;
     }
   }
-  if ( FreeToSend ) {
-    if ((SendPacket.EncoderInfo.rotationCounter != 0) || (SendPacket.EncoderInfo.pushed != pushbutton)){
-      SendPacket.EncoderInfo.pushed = pushbutton;
-      Serial.write(SendPacket.buffer,2);
-      SendPacket.EncoderInfo.rotationCounter = 0;
 
-      FreeToSend = false;
+  // If it's ok to send the current encoder data, check if something changed, then send it
+  if ( FreeToSend ) {
+    if ((InfoPacket.rotation != 0) || (InfoPacket.pushed != pushbutton)){
+      InfoPacket.pushed = pushbutton;
+      Serial.write((char*)(&InfoPacket),2);
+      InfoPacket.rotation = 0; //Reset saved rotations count 
+
+      FreeToSend = false; //Reset FreeToSend state
     }
   }
 }
