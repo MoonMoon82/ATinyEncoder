@@ -83,13 +83,6 @@ void loop() {
   //Get the push button state - reminder: due to the INPUT_PULLUP the state needs to be inverted
   boolean pushbutton = !digitalRead(PUSH_BTN);
   
-  if ( Serial.available() ){
-    //Check if the host sends this specific byte to tell it's ok to send the current encoder data
-    if ( Serial.read() == 90 ) { //idk ? What byte should I wait for?
-      FreeToSend = true;
-    }
-  }
-
   // If it's ok to send the current encoder data, check if something changed, then send it
   if ( FreeToSend ) {
     if ((InfoPacket.rotation != 0) || (InfoPacket.pushed != pushbutton)){
@@ -98,6 +91,13 @@ void loop() {
       InfoPacket.rotation = 0; //Reset saved rotations count 
 
       FreeToSend = false; //Reset FreeToSend state
+    }
+  } else {
+    if ( Serial.available() ){
+    //Check if the host sends this specific byte to tell it's ok to send the current encoder data
+      if ( Serial.read() == 90 ) { //idk ? What byte should I wait for?
+        FreeToSend = true;
+      }
     }
   }
 }
