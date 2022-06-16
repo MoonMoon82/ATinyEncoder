@@ -19,10 +19,9 @@ class ATinyEnocder {
         SerialPort->begin(9600);
     }
     boolean handle(){
-        char ok = 80;
+        char ok = 90;
         newInfo = false;
         if ( called == false ){
-            //SerialPort.write(ok);
             SerialPort->write(ok);
             called = true;
         }
@@ -36,10 +35,7 @@ class ATinyEnocder {
     return false;
     }
     void reset(){
-        RecPacket.pushed = false;
         RecPacket.rotationCounter = 0;
     }
 };
-
-
 
