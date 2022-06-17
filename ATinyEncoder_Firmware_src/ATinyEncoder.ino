@@ -1,3 +1,6 @@
+//Firmware for ATTiny controller to be used as Rotary Encoder Interface
+//https://github.com/MoonMoon82/ATinyEncoder
+
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
