@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "ATinyEncoder_lib.h"
 
-ATinyEnocder MyEncoder(&Serial2); //Serial2 on ESP32 default pins are GPIO 16(RX) and 17(TX)
+ATinyEncoder MyEncoder(&Serial2); //Serial2 on ESP32 default pins are GPIO 16(RX) and 17(TX)
 int rotations = 0; //Saved rotations of the Rotary Encoder
 
 void setup() {
@@ -11,12 +11,11 @@ void setup() {
 void loop(){
   //if new Encoder data has arrived show it on default serial port
   if (MyEncoder.handle()) {
-    rotations += MyEncoder.RecPacket.rotationCounter; //Add new rotations to the saved rotations
+    rotations += MyEncoder.status.rotation; //Add new rotations to the saved rotations
     
     Serial.print("rotation=");
     Serial.print(rotations);
     Serial.print("  pushed=");
-    Serial.println(MyEncoder.RecPacket.pushed);
+    Serial.println(MyEncoder.status.pushed);
   }
-  MyEncoder.reset();
 }
