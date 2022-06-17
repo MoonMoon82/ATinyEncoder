@@ -14,7 +14,7 @@
 
 SoftwareSerial Serial(RX, TX);
 
-boolean FreeToSend = false; //Host tells it is ok to send current encoder data
+bool freeToSend = false; //Host tells it is ok to send current encoder data
 
 //Data structure to send
 struct Info {
@@ -84,22 +84,22 @@ void loop() {
   InfoPacket.rotation += rotationDelta;
 
   //Get the push button state - reminder: due to the INPUT_PULLUP the state needs to be inverted
-  boolean pushbutton = !digitalRead(PUSH_BTN);
+  bool pushbutton = !digitalRead(PUSH_BTN);
   
   // If it's ok to send the current encoder data, check if something changed, then send it
-  if ( FreeToSend ) {
+  if ( freeToSend ) {
     if ((InfoPacket.rotation != 0) || (InfoPacket.pushed != pushbutton)){
       InfoPacket.pushed = pushbutton;
       Serial.write((char*)(&InfoPacket),2);
       InfoPacket.rotation = 0; //Reset saved rotations count 
 
-      FreeToSend = false; //Reset FreeToSend state
+      freeToSend = false; //Reset FreeToSend state
     }
   } else {
     if ( Serial.available() ){
     //Check if the host sends this specific byte to tell it's ok to send the current encoder data
       if ( Serial.read() == 90 ) { //idk ? What byte should I wait for?
-        FreeToSend = true;
+        freeToSend = true;
       }
     }
   }
