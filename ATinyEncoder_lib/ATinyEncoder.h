@@ -1,3 +1,5 @@
+// Library for easy usage of ATinyEncoder:
+// https://github.com/MoonMoon82/ATinyEncoder
 #include <Arduino.h>
 
 //Data structure to receive
