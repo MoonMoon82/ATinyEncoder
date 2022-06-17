@@ -1,3 +1,5 @@
+//Example file for a ESP32 microcontroller using ATinyEncoder
+//https://github.com/MoonMoon82/ATinyEncoder
 #include "Arduino.h"
 #include "ATinyEncoder_lib.h"
 
