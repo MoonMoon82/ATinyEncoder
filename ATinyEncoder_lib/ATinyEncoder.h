@@ -12,7 +12,7 @@ struct Info{
 class ATinyEncoder {
     private:
         HardwareSerial* SerialPort; //Target Serial port to communicate with the ATTiny
-        boolean called = false;     //Remember if a request was sent
+        bool called = false;     //Remember if a request was sent
 
     public:
         Info status;             //Status of the Encoder 
@@ -21,7 +21,7 @@ class ATinyEncoder {
             SerialPort->begin(9600);    //idk 9600baut works quite ok for me
         }
 
-    boolean handle(){
+    bool handle(){
         status.rotation = 0;        //reset saved rotation
         if ( called == false ){
             char RequestByte = 90;              //request byte 80 (idk should I chose another byte?)
