@@ -6,7 +6,6 @@ struct Info{
   bool pushed;
 };
 
-
 //A simple class for easy usage of the ATinyEncoder
 class ATinyEncoder {
     private:
