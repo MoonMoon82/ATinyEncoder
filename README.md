@@ -6,13 +6,14 @@ https://github.com/RalphBacon/226-Better-Rotary-Encoder---no-switch-bounce
 
 https://www.pinteric.com/rotary.html
 
-His code has got high hitrate for accurate reading of rotary encoders. But it also has got a big flaw if you're trying to get a rotary encoder working in your own project: Whatever what's in your code causing a delay of calling the checkRotaryEncoder() leads to a false estimation of the encoder state.
-To get rid of the flaw, I decided to get his code running on a dedicated ATTiny85. It is sending the relative iterations and state of the push button in a 2 byte structure over software-serial pins.
+His code has got high hitrate for accurate reading of rotary encoders. But it also has got a big flaw, if there are other time consuming tasks in your project which lead to a delayed call of the checkRotaryEncoder() routine. A delay in this case leads to a false estimation of the rotary encoder state.
+To run his code on a dedicated ATTiny85 get's rid of this issue. The ATTiny85 is sending the relative iterations and state of the push button in a 2 byte structure over software-serial pins.
 
 The byte structure:
 
-1. byte boolean - Pushbutton pressed
+1. byte bool - Pushbutton pressed
 2. byte int_8 - Relative iterations of the rotary encoder since the last request
 
 
-I also provide a small and simple library for arduino framework based microcontrollers to communicate with the ATTiny controller.
+There's also a small and simple library for arduino framework based microcontrollers provided to communicate with the ATTiny controller.
+
