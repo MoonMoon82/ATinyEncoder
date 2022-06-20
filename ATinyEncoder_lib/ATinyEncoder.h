@@ -5,7 +5,7 @@
 //Data structure to receive
 struct Info{
   int8_t rotation;
-  bool pushed;
+  uint8_t pushed;
 };
 
 //A simple class for easy usage of the ATinyEncoder
