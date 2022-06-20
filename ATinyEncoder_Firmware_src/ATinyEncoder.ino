@@ -19,7 +19,7 @@ bool freeToSend = false; //Host tells it is ok to send current encoder data
 //Data structure to send
 struct Info {
   int8_t rotation;
-  bool pushed;
+  uint8_t pushed;
 } InfoPacket;
 
 //checkRotaryEncoder() by Ralph Bacon / Marko Pinteric
