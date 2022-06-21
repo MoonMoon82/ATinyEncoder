@@ -17,3 +17,6 @@ The byte structure:
 
 There's also a small and simple library for arduino framework based microcontrollers provided to communicate with the ATTiny controller.
 
+Youtube Tutorial - How to mount a ATTiny directly to a std. Rotary Encoder:
+
+[![Everything Is AWESOME](https://user-images.githubusercontent.com/41437842/174894199-6547f58c-7040-40b9-93c9-520fb75cf1d7.png)](https://www.youtube.com/watch?v=cieDlKowjJk "Everything Is AWESOME")
