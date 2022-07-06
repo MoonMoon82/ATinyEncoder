@@ -20,3 +20,5 @@ There's also a small and simple library for arduino framework based microcontrol
 Youtube Tutorial - How to mount a ATTiny directly to a std. Rotary Encoder:
 
 [![Everything Is AWESOME](https://user-images.githubusercontent.com/41437842/174894199-6547f58c-7040-40b9-93c9-520fb75cf1d7.png)](https://www.youtube.com/watch?v=cieDlKowjJk "Everything Is AWESOME")
+![RotEnc1](https://user-images.githubusercontent.com/41437842/177519406-62cb5f56-f707-42b9-b294-fffac9a5ff74.jpg)
+![RotEnc2](https://user-images.githubusercontent.com/41437842/177519431-a3c11202-e0ce-4f8f-b711-4267c10d08c8.jpg)
