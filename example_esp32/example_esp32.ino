@@ -1,7 +1,7 @@
 //Example file for a ESP32 microcontroller using ATinyEncoder
 //https://github.com/MoonMoon82/ATinyEncoder
 #include "Arduino.h"
-#include "ATinyEncoder_lib.h"
+#include "ATinyEncoder.h"
 
 ATinyEncoder MyEncoder(&Serial2); //Serial2 on ESP32 default pins are GPIO 16(RX) and 17(TX)
 int rotations = 0; //Saved rotations of the Rotary Encoder
